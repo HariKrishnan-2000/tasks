@@ -1,0 +1,828 @@
+/* --- Base & Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+html {
+    scroll-padding-top: 80px; /* Adjust based on final header height */
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* --- Background Elements --- */
+.img-gradient {
+    position: fixed;
+    top: -50%;
+    right: -50%;
+    width: 150%;
+    height: 150%;
+    opacity: 0.25;
+    z-index: -2;
+    animation: rotateGradient 60s linear infinite;
+    pointer-events: none; /* Make it non-interactive */
+}
+
+@keyframes rotateGradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.layer-blur {
+    position: fixed;
+    width: 50rem;
+    height: 50rem;
+    top: 10%;
+    left: -20%;
+    background: radial-gradient(circle, rgba(127, 66, 167, 0.15), transparent 70%);
+    filter: blur(120px);
+    z-index: -1;
+    pointer-events: none; /* Make it non-interactive */
+}
+
+.layer-blur::after {
+    content: '';
+    position: absolute;
+    width: 40rem;
+    height: 40rem;
+    bottom: 5%;
+    right: -15%;
+    background: radial-gradient(circle, rgba(0, 100, 197, 0.12), transparent 70%);
+    filter: blur(100px);
+    z-index: -1;
+}
+
+
+/* --- Layout --- */
+.container {
+    width: 100%;
+    max-width: 1100px; /* Adjusted max width */
+    margin: 0 auto;
+    padding: 0 1.5rem; /* Consistent padding */
+    position: relative; /* Needed for z-index context on sections if required */
+}
+
+section {
+    padding: 6rem 0;
+    margin-bottom: 4rem; /* Space between sections */
+    position: relative; /* For potential ::before/::after pseudo-elements */
+    z-index: 15; /* Ensure content is above background layers */
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem; /* Standard padding */
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* High z-index to stay on top */
+    background: rgba(10, 10, 10, 0.7); /* Dark background with transparency */
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%); /* Safari support */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Subtle separator */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+header h1.logo {
+    color: #d1d1d1;
+    margin: 0;
+    font-size: 2.3rem;
+    font-weight: 400; /* Lighter weight for elegance */
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+header h1.logo:hover {
+    color: #ffffff; /* Highlight on hover */
+}
+
+nav {
+    color: #c0c0c0; /* Slightly muted nav color */
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; /* Space between nav items */
+}
+
+nav a {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: .08rem; /* Increased letter spacing */
+    transition: color .3s ease, transform 0.3s ease;
+    text-decoration: none;
+    color: inherit; /* Inherit color from nav */
+    position: relative;
+    padding-bottom: 4px; /* Space for potential underline/active state */
+}
+
+nav a:hover {
+    color: #ffffff;
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+nav a.active {
+    color: #ffffff; /* White for active link */
+    font-weight: 600; /* Make active link bolder */
+}
+
+/* --- Hero Section --- */
+#hero {
+    min-height: 90vh; /* Near full viewport height */
+    display: flex;
+    align-items: center;
+    padding-top: 80px; /* Account for sticky header */
+    margin-bottom: 6rem; /* Extra space after hero */
+    position: relative;
+    z-index: 10; /* Below header, above background */
+}
+
+#hero main {
+     display: flex; /* Use flexbox for layout */
+     align-items: center; /* Vertically align items */
+     justify-content: space-between; /* Space out content and image */
+     gap: 2rem; /* Gap between content and image */
+     width: 100%;
+     position: relative; /* For positioning 3D cube */
+}
+
+.content {
+    max-width: 40rem; /* Limit text width */
+    z-index: 20; /* Ensure text is above photo/cube */
+    flex-basis: 55%; /* Give content slightly more space */
+    position: relative; /* If needed for pseudo-elements */
+}
+
+.hero-photo-container {
+    flex-basis: 35%; /* Space for the photo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15; /* Above cube, below text */
+    position: relative;
+}
+
+.hero-photo {
+    width: clamp(180px, 25vw, 300px); /* Responsive size */
+    height: clamp(180px, 25vw, 300px);
+    border-radius: 50%; /* Circular photo */
+    object-fit: cover; /* Cover the area */
+    border: 4px solid rgba(255, 255, 255, 0.15); /* Subtle border */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* Nice shadow */
+    display: block; /* Remove extra space below image */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.hero-photo:hover {
+    transform: scale(1.08) rotate(3deg); /* Fun hover effect */
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.cube-3d {
+    /* Adjust size and position as needed */
+    width: clamp(350px, 55vw, 650px); /* Responsive size */
+    height: clamp(350px, 55vw, 650px);
+    position: absolute;
+    top: 18vh; /* Adjust vertical position */
+    right: -22%; /* Adjust horizontal position */
+    z-index: 5; /* Behind text and photo */
+    opacity: 0.6; /* Slightly transparent */
+    pointer-events: none; /* Allow clicking through */
+    transition: opacity 0.5s ease;
+}
+
+.tag-box {
+    position: relative;
+    width: fit-content; /* Size to content */
+    padding: 0 1.5rem; /* Horizontal padding */
+    height: 2.5rem; /* Fixed height */
+    border-radius: 50px; /* Pill shape */
+    background: linear-gradient(90deg, #b45dff, #7f42a7, #6600c5, #5300a0, #8a50bf, #b45dff);
+    background-size: 250%; /* For animation */
+    animation: animationGradient 4s linear infinite;
+    box-shadow: 0 0 20px rgba(170, 85, 255, 0.4); /* Glow effect */
+    margin-bottom: 1.5rem; /* Space below */
+    display: inline-block; /* Allows margin-bottom */
+    transition: transform 0.3s ease;
+}
+.tag-box:hover {
+    transform: scale(1.05); /* Slight scale on hover */
+}
+
+@keyframes animationGradient { /* Gradient animation */
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.tag-box .tag {
+    position: absolute;
+    inset: 2px; /* Creates the inner border effect */
+    color: #e0e0e0;
+    background-color: #181818; /* Dark background for text */
+    border-radius: 50px; /* Match outer shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    padding: 0 1rem; /* Inner text padding */
+    font-size: 0.9rem;
+    cursor: default; /* Indicate it's not clickable */
+}
+
+.content h1 {
+    color: #ffffff;
+    font-size: clamp(2.5rem, 6vw, 4.2rem); /* Responsive font size */
+    font-weight: 700; /* Bold heading */
+    letter-spacing: .05em;
+    margin: 0 0 1rem 0; /* Space below heading */
+    line-height: 1.3; /* Comfortable line height */
+    text-shadow: 0 3px 20px rgba(0, 0, 0, 0.3); /* Text shadow for readability */
+}
+
+.desc {
+    font-size: clamp(1rem, 2.5vw, 1.2rem); /* Responsive font size */
+    letter-spacing: 0.03em;
+    font-weight: 400; /* Regular weight */
+    max-width: 35rem; /* Limit description width */
+    color: #b3b3b3; /* Slightly muted color */
+    margin-bottom: 2.5rem; /* Space below description */
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    gap: 1rem; /* Space between buttons */
+    margin-top: 2.5rem; /* Space above buttons */
+}
+
+/* --- Buttons --- */
+.btn-contact, .btn-hireMe, .btn-project {
+    text-decoration: none;
+    padding: .8rem 1.8rem;
+    border-radius: 50px; /* Pill shape */
+    font-size: 1rem;
+    font-weight: 600; /* Bold button text */
+    letter-spacing: 0.08em; /* Spaced out letters */
+    transition: all .3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: inline-block; /* Proper alignment and spacing */
+    cursor: pointer;
+    border: 1px solid transparent; /* Base border */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+
+.btn-contact {
+    border-color: rgba(255, 255, 255, 0.3); /* Outline style */
+    color: #c0c0c0;
+    background: transparent;
+}
+
+.btn-contact:hover {
+    background-color: rgba(255, 255, 255, 0.08); /* Slight background on hover */
+    border-color: rgba(255, 255, 255, 0.6); /* Brighter border */
+    color: #ffffff; /* White text */
+    transform: translateY(-3px) scale(1.03); /* Lift and scale */
+    box-shadow: 0 4px 10px rgba(255,255,255,0.1); /* Enhanced shadow */
+}
+
+.btn-hireMe {
+    background: linear-gradient(90deg, #a050f0, #7030c0); /* Purple gradient */
+    color: #ffffff;
+    border: none; /* No border needed for filled button */
+    box-shadow: 0 4px 15px rgba(112, 48, 192, 0.3); /* Gradient shadow */
+}
+
+.btn-hireMe:hover {
+    background: linear-gradient(90deg, #b060ff, #8040d0); /* Lighter gradient on hover */
+    box-shadow: 0 6px 20px rgba(112, 48, 192, 0.5); /* Stronger shadow */
+    transform: translateY(-3px) scale(1.03); /* Lift and scale */
+}
+
+.btn-project { /* Styles for project card buttons */
+    padding: 0.5rem 1.2rem; /* Smaller padding */
+    font-size: 0.9rem; /* Slightly smaller font */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0c0c0;
+    background-color: rgba(255, 255, 255, 0.05); /* Very subtle background */
+}
+.btn-project:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    transform: translateY(-2px); /* Smaller lift */
+}
+
+/* --- Section Titles --- */
+section h2 {
+    font-size: clamp(2rem, 5vw, 2.8rem); /* Responsive title size */
+    font-weight: 600;
+    color: #e5e5e5;
+    margin-bottom: 3.5rem; /* Space below title */
+    text-align: center;
+    letter-spacing: 0.05em;
+    position: relative; /* Needed for ::after */
+    display: inline-block; /* Allows transform */
+    left: 50%;
+    transform: translateX(-50%); /* Center align */
+    transition: color 0.3s ease;
+}
+section h2:hover {
+     color: #ffffff;
+}
+
+section h2::after { /* Underline effect */
+    content: '';
+    position: absolute;
+    width: 70px; /* Initial width */
+    height: 3px;
+    background: linear-gradient(90deg, #a050f0, #7030c0); /* Match button gradient */
+    bottom: -12px; /* Position below text */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    transition: width 0.4s ease; /* Animate width on hover */
+}
+section h2:hover::after {
+    width: 100px; /* Expand underline on hover */
+}
+
+/* --- About Section --- */
+.section-card { /* Glassmorphism card style for About */
+    padding: 3rem;
+    border-radius: 20px; /* Rounded corners */
+    margin: 0 auto 4rem auto; /* Centered with bottom margin */
+    max-width: 950px;
+    background: rgba(25, 25, 25, 0.55); /* Semi-transparent background */
+    backdrop-filter: blur(15px) saturate(160%);
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Subtle border */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow */
+}
+
+#about .about-content {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    align-items: center; /* Align items vertically */
+    gap: 2rem; /* Space between elements if you add an image later */
+}
+#about p {
+    color: #c8c8c8;
+    font-size: 1.1rem;
+    line-height: 1.7; /* Improve readability */
+    flex: 1; /* Allow text to take available space */
+    min-width: 300px; /* Prevent text becoming too narrow */
+}
+#about p strong { /* Style strong tags */
+    color: #e5e5e5;
+    font-weight: 600;
+}
+
+/* --- Experience Section --- */
+#experience {
+     max-width: 900px; /* Constrain width */
+     margin-left: auto;
+     margin-right: auto;
+}
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between items */
+}
+.experience-item {
+    padding: 1.8rem;
+    border-radius: 12px; /* Rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.experience-item:hover {
+    transform: translateY(-5px); /* Lift effect */
+    border-color: rgba(255, 255, 255, 0.3); /* Highlight border */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Add shadow */
+}
+.experience-item h3 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+}
+.company-duration {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-style: italic; /* Italicize for distinction */
+}
+.experience-item ul {
+    list-style: disc; /* Standard bullet points */
+    margin-left: 1.5rem; /* Indent list */
+    color: #b3b3b3; /* Muted list item color */
+}
+.experience-item li {
+    margin-bottom: 0.6rem; /* Space between list items */
+}
+
+/* --- Projects Section --- */
+#projects {
+    max-width: 1000px; /* Constrain width */
+    margin-left: auto;
+    margin-right: auto;
+}
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 1.5rem; /* Space between cards */
+    align-items: start; /* Align cards to the top */
+}
+.project-card {
+    background: rgba(255, 255, 255, 0.03); /* Very subtle card background */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
+    overflow:visible; /* Clip image corners */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack content vertically */
+    height: 100%; /* Make cards in a row equal height (if needed) */
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    cursor: pointer; /* Indicate card is clickable for modal */
+}
+.project-card:hover {
+    transform: translateY(-8px) scale(1.02); /* More pronounced lift and scale */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Stronger shadow */
+    border-color: rgba(255, 255, 255, 0.25); /* Highlight border */
+}
+.project-card img {
+    width: 100%;
+    height: 200px; /* Fixed image height */
+    object-fit: cover; /* Cover the area */
+    display: block; /* Remove extra space */
+    transition: filter 0.3s ease;
+}
+.project-card h3 {
+    color: #e5e5e5;
+    font-size: 1.3rem;
+    padding: 1.2rem 1.5rem 0.5rem 1.5rem; /* Padding around title */
+}
+.project-card p {
+    color: #b3b3b3;
+    font-size: 0.95rem;
+    padding: 0 1.5rem 1.2rem 1.5rem; /* Padding around description */
+    flex-grow: 1; /* Allow description to push links down */
+    line-height: 1.5;
+}
+.project-links {
+    padding: 0 1.5rem 1.5rem 1.5rem; /* Padding around links */
+    display: flex;
+    gap: 0.8rem; /* Space between links */
+    flex-wrap: wrap; /* Wrap links if needed */
+    margin-top: auto; /* Push links to the bottom */
+}
+
+/* --- Contact Section --- */
+#contact {
+     text-align: center; /* Center align content */
+     max-width: 700px; /* Constrain width */
+     margin-left: auto;
+     margin-right: auto;
+}
+#contact p {
+    color: #c0c0c0;
+    font-size: 1.15rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    margin-top: 5rem; /* Space above footer */
+    color: #666; /* Muted footer text */
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Subtle top border */
+}
+
+/* --- Base Modal Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    padding: 1rem;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease;
+}
+
+.modal-content-wrapper {
+    background: #1c1c1c;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.modal-overlay.active .modal-content-wrapper {
+    transform: scale(1) translateY(0);
+}
+
+/* Custom Scrollbar for Modal (Optional) */
+.modal-content-wrapper::-webkit-scrollbar { width: 8px; }
+.modal-content-wrapper::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+.modal-content-wrapper::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+.modal-content-wrapper::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 2.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.modal-close-btn:hover { color: #fff; transform: rotate(90deg); }
+
+/* REMOVED styles for specific #modal-img if they existed */
+
+.modal-content h3#modal-title {
+    color: #ffffff;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 1rem;
+}
+
+.modal-content #modal-description {
+    color: #c8c8c8;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+.modal-content #modal-description p { margin-bottom: 1em; }
+.modal-content #modal-description p:last-child { margin-bottom: 0; }
+
+.modal-content h4 {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    border-left: 3px solid #a050f0;
+    padding-left: 0.8rem;
+}
+
+.modal-content ul#modal-tech-stack {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.modal-content ul#modal-tech-stack li {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #d0d0d0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.modal-content #modal-links {
+    margin-top: 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: flex-start;
+}
+
+/* --- Modal Image Gallery Styles --- ADDED */
+.modal-image-gallery {
+    display: flex; /* Arrange images in a row */
+    flex-wrap: wrap; /* Allow images to wrap to the next line */
+    gap: 10px; /* Space between images */
+    margin-bottom: 1.5rem; /* Space below the gallery */
+    background-color: rgba(0, 0, 0, 0.2); /* Optional subtle background */
+    padding: 10px; /* Padding around the gallery */
+    border-radius: 8px; /* Match other border radii */
+}
+
+.modal-image-gallery img {
+    height: 400px; /* Set a fixed height for thumbnails */
+    width: auto; /* Let width adjust automatically */
+    max-width: calc(); /* Limit width, adjust for gap */
+    object-fit:contain; /* Crop images nicely */
+    border-radius: 4px; /* Slightly rounded corners for images */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    flex-grow: 1; /* Allow images to grow slightly to fill space */
+    cursor: pointer; /* Optional: Indicate they might be clickable */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.modal-image-gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+
+/* --- Responsive Design --- */
+
+@media (max-width: 992px) {
+    html { scroll-padding-top: 70px; }
+    header { padding: 1rem 1.5rem; }
+    nav { display: none; }
+    header h1.logo { font-size: 2rem; margin: 0 auto; }
+    #hero { padding-top: 70px; min-height: auto; margin-bottom: 4rem; }
+    #hero main { flex-direction: column; text-align: center; gap: 3rem; }
+    .content { flex-basis: auto; max-width: 90%; order: 2; margin-bottom: 0;}
+    .hero-photo-container { flex-basis: auto; order: 1; margin-bottom: 1rem; }
+    .hero-photo { width: clamp(150px, 40vw, 220px); height: clamp(150px, 40vw, 220px); }
+    .cube-3d { position: relative; width: 70%; max-width: 350px; height: 350px; top: 0; right: 0; margin: 0 auto; z-index: 5; opacity: 0.7; order: 3; }
+    .buttons { justify-content: center; }
+    section { padding: 4rem 0; }
+    section h2 { font-size: 2.2rem; margin-bottom: 3rem; }
+    .section-card { padding: 2.5rem; margin: 0 1rem 4rem 1rem; }
+    .projects-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    #experience { max-width: 90%; }
+
+    /* MODAL Responsive - 992px */
+    .modal-content-wrapper {
+        max-width: 700px;
+    }
+    /* GALLERY Responsive - 992px -- ADDED */
+    .modal-image-gallery img {
+         max-width: calc(25% - 10px); /* 4 images per row */
+    }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 0 1rem; }
+    .hero-photo { width: clamp(140px, 35vw, 200px); height: clamp(140px, 35vw, 200px); }
+    .cube-3d { width: 80%; max-width: 300px; height: 300px; }
+    .content h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+    .desc { font-size: clamp(0.9rem, 4vw, 1rem); max-width: 90%; margin-left: auto; margin-right: auto;}
+    .btn-contact, .btn-hireMe { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
+    .section-card { padding: 2rem; border-radius: 15px; }
+    #about p { font-size: 1rem; }
+    .experience-item { padding: 1.5rem; }
+    .experience-item h3 { font-size: 1.2rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card { border-radius: 12px; }
+    .project-card[style*="grid-column"] { grid-column: span 1 !important; }
+    #contact p { font-size: 1.05rem; }
+    footer { padding: 2rem 1rem; margin-top: 3rem; }
+
+    /* MODAL Responsive - 768px */
+    .modal-content-wrapper {
+        padding: 1.5rem 2rem;
+        max-width: 90%;
+        width: 90%;
+    }
+    /* REMOVED specific img#modal-img styles */
+     .modal-content h3#modal-title {
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
+    }
+    .modal-content #modal-description {
+        font-size: 1rem;
+    }
+     .modal-content h4 {
+        font-size: 1rem;
+    }
+    .modal-content ul#modal-tech-stack li {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.7rem;
+    }
+    .modal-close-btn {
+        font-size: 2.2rem;
+        top: 8px;
+        right: 12px;
+    }
+    /* GALLERY Responsive - 768px -- ADDED */
+    .modal-image-gallery {
+        gap: 8px;
+        padding: 8px;
+    }
+    .modal-image-gallery img {
+        height: 80px;
+        max-width: calc(33.333% - 8px); /* 3 images per row */
+    }
+}
+
+@media (max-width: 480px) {
+    html { scroll-padding-top: 60px; }
+    header { padding: 0.8rem 1rem; }
+    header h1.logo { font-size: 1.8rem; }
+    #hero { padding-top: 60px; margin-bottom: 3rem;}
+    #hero main { gap: 2rem; }
+    .hero-photo { width: clamp(120px, 30vw, 160px); height: clamp(120px, 30vw, 160px); border-width: 3px; }
+    .content h1 { font-size: 2rem; }
+    .desc { font-size: 0.9rem; }
+    .tag-box { height: 2.2rem; padding: 0 1rem;}
+    .tag-box .tag { font-size: 0.8rem; }
+    .buttons { gap: 0.8rem; }
+    .btn-contact, .btn-hireMe { width: 100%; text-align: center; padding: 0.8rem 1rem; }
+    section { padding: 3rem 0; margin-bottom: 3rem; }
+    section h2 { font-size: 1.8rem; margin-bottom: 2.5rem; }
+    section h2::after { width: 50px; bottom: -10px; }
+    section h2:hover::after { width: 70px; }
+    .section-card { padding: 1.5rem; margin: 0 0.5rem 3rem 0.5rem; }
+    .experience-item { padding: 1.2rem; }
+    .project-card { padding-bottom: 1rem; }
+    .project-card h3 { font-size: 1.1rem; padding: 1rem 1rem 0.3rem 1rem; }
+    .project-card p { font-size: 0.85rem; padding: 0 1rem 1rem 1rem; }
+    .project-links { padding: 0 1rem 1rem 1rem; }
+    .btn-project { padding: 0.5rem 1rem; font-size: 0.8rem; }
+    #contact p { font-size: 1rem; }
+
+    /* MODAL Responsive - 480px */
+    .modal-overlay {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 3rem;
+    }
+    .modal-content-wrapper {
+        padding: 1.5rem 1.2rem;
+        width: 95%;
+        max-height: 85vh;
+    }
+    /* REMOVED specific img#modal-img styles */
+     .modal-content h3#modal-title {
+        font-size: 1.3rem;
+    }
+    .modal-content #modal-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+     .modal-content h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.6rem;
+        padding-left: 0.6rem;
+    }
+    .modal-content ul#modal-tech-stack {
+        gap: 0.4rem 0.6rem;
+        margin-bottom: 1.5rem;
+    }
+    .modal-content ul#modal-tech-stack li {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+    }
+    .modal-content #modal-links .btn-project {
+        width: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+     .modal-close-btn {
+        font-size: 2rem;
+        top: 6px;
+        right: 8px;
+    }
+    /* GALLERY Responsive - 480px -- ADDED */
+     .modal-image-gallery {
+        gap: 6px;
+        padding: 6px;
+    }
+    .modal-image-gallery img {
+        height: 70px;
+        max-width: calc(50% - 6px); /* 2 images per row */
+    }
+}
